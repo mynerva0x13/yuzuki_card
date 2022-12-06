@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css" />
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <title>Discord Bot Command Generator</title>
+    </head>
+    <body>
+        <div class="drop">
+        Select Command:
+        <select onchange="myFunction()" id="drop">
+            <option value="signin">Sign In</option>
+            <option value="asset">Create Assets</option>
+            <option value="punchline">Punchline</option>
+        </select>
+        
+    </div>
+        <div id="asset">
+            <h2>Create new Asset</h2>
+            <label>Enter Name: </label><input type="text" id="name" /> <br/><br/>
+            <label>Image link: </label><input type="text" id="link" /><br/><br/>
+            <label>Description</label><input type="text" id="desc" /><br/><br/>
+            <label>Select Category: </label>
+            <select id="assSelect">
+                <option>person</option>
+                <option>place</option>
+                <option>event</option>
+                <option>object</option>
+                <option>action</option>
+            </select><br /><br/><b>Output:</b><p id="outasset"></p>
+            <button onclick="asset()">
+                Create Command
+            </button>
+        </div>
+        <div id="punchline">
+            <h2>Create new punchline</h2>
+            <label>Create text: </label><input type="text" id="line" /><br/>
+            <h3>Click to add in the line</h3>
+            <button class="button_p">(person)</button>
+            <button class="button_p">(place)</button><br/><br/>
+            <button class="button_p">(event)</button>
+            <button class="button_p">(object)</button><br/><br/>
+            <button class="button_p">(action)</button>
+            <button class="button_p red">Clear</button><br/><br/>
+            <br/><br/>
+       <p id="outp"></p>
+        <button onclick="onpunch()">
+            Create Command
+        </button>
+        </div>
+
+        <div id="signin">
+            <h2>SignUp</h2>
+            <label>Your twitter username: </label><input type="text" id="tw">
+            <p id="sout"></p>
+            <button onclick="document.getElementById('sout').innerHTML='/signup '+document.getElementById('tw').value">
+                Create Command
+            </button>
+        </div>
+        <br><br>
+        <center>
+            <button class="btn" style="width:200px;color:white;background-color:rgb(59, 184, 59);" onclick="location.href='card.html'">HOME</button>
+        </center>
+        <img src="Discord_button.png" id="disbutton" onclick="go_to()"/>
+        <script>
+            window.addEventListener("load", function() {
+                show([true,false,false])
+            })
+        
+            function show(a) {
+                document.getElementById("asset").style.display= (a[0] ? 'block' : 'none')
+                document.getElementById("punchline").style.display= (a[1] ? 'block' : 'none')
+                document.getElementById("signin").style.display= (a[2] ? 'block' : 'none')
+            }
+            function myFunction() {
+              var x = document.getElementById("drop");
+              var i = x.selectedIndex;
+
+              if(x.options[i].value=="punchline") show([false,true,false])
+              else  if(x.options[i].value=="asset") show([true,false,false])
+              else  if(x.options[i].value=="signin") show([false,false,true])
+            }
+            function asset() {
+                let a = document.getElementById("name").value
+                let b = document.getElementById("link").value
+                let c = document.getElementById('desc').value
+                
+                let x = document.getElementById("assSelect")
+
+                let d = x.selectedIndex;
+
+                document.getElementById("outasset").innerHTML = `/addAsset "${a}" ${b} "${c}" ${x.options[d].value} `
+            }
+            
+            max_in = 0
+            for(let i = 0; i <= document.getElementsByClassName("button_p").length-2;i++) {
+                document.getElementsByClassName("button_p")[i].addEventListener("click",function(){
+                    max_in = max_in+1;
+                    console.log(max_in)
+                    if(max_in<=4) {
+                        
+                        document.getElementById("line").value +=   " "+document.getElementsByClassName("button_p")[i].textContent
+                    }
+                    else {
+                        alert("Sorry, only 4 attr. in this command...Require click to button to reset")
+                    }
+
+                })
+            }
+            document.getElementsByClassName("button_p")[5].addEventListener("click",function(){
+                max_in = 0
+                document.getElementById("line").value = ""
+            })
+            function onpunch() {
+                document.getElementById("outp").innerHTML = `/punchline "${document.getElementById("line").value}"`
+            }
+            function go_to (){
+                location.href = "https://discord.gg/Ht4zy7dRdY"
+            }
+            </script>
+    </body>
+</html>
